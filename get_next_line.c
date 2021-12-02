@@ -6,7 +6,7 @@
 /*   By: kmoutaou <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 06:05:51 by kmoutaou          #+#    #+#             */
-/*   Updated: 2021/12/02 04:45:30 by kmoutaou         ###   ########.fr       */
+/*   Updated: 2021/12/02 06:45:30 by kmoutaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,76 +25,59 @@ int	ft_check_newline(char *str)
 	return (0);
 }
 /*
-char	*get_line(char *text)
+char	*get_save(char *text)
 {
+	char	*r;
 	int		i;
-	int		j;
-	char	*line;
-	int		k;
 
-	i = 0;
-	j = 0;
-	k = 0;
-	while (text[i] && text[i] != '\n')
+	if(!text)
+		return (NULL);
+	while(text[i] && text[i] != '\n')
 		i++;
-	j = i;
-	k = i;
-	while (text[j])
-	{
-		j++;
-	}
-	line = ft_substr(text, 0, i);
-	text = ft_substr(text, k, j);
-	return (line);
+	if(text[i] == '\n')
+		i++;
+
 }
 */
+
 char	*get_newline_line(char *text)
 {
 	int	i;
-	int	index0;
-	int	index1;
-
+	int j;
+	char *r;
+	
+	if(!text)
+		return (NULL);
 	i = 0;
-	index0 = 0;
-	index1 = 0;
-	if (ft_check_newline(text))
-	{
-		while (text[i])
-		{
-			if (text[i] == '\n')
-			{
-				index0 = i + 1;
-				index1 = i + 1;
-			}
-			i++;
-		}
-	}
-	while (text[index0])
-	{
-		index0++;
-	}
-	text = ft_substr(text, index1, index0);
-	return (text);
+	while (text[i] && text[i] != '\n')
+		i++;
+	if(i == ft_strlen(text))
+		return (NULL);
+	if(text[i] == '\n')
+		i++;
+	j = i;
+	while(text[j])
+		j++;
+	r = ft_substr(text, i, j);
+	return (r);
 }
 
-char	*get_line(char **text)
+char	*get_line(char *text)
 {
 	int		i;
 	char	*line0;
-	char	*line1;
 
 	i = 0;
 	line0 = NULL;
-	if (!(*text))
+	if (!text)
 		return (NULL);
-	while ((*text)[i] && (*text)[i] != '\n')
+	while (text[i] && text[i] != '\n')
 		i++;
-	if ((*text)[i] == '\n')
-	{
-		line0 = ft_substr(*text, 0, i + 1);
-		line1 = ft_substr(*text, i + 1, ft_strlen(*text) - i - 1);
-		*text = line1;
-	}
+	if (text[i] == '\n')
+		i++;
+	if (i == 0)
+		return (NULL);
+	line0 = ft_substr(text, 0, i);
 	return (line0);
 }
 
@@ -102,7 +85,6 @@ char	*get_next_line(int fd)
 {
 	char			*buff;
 	static char		*text0;
-	char			*text1;
 	char			*line;
 	int				test;
 
@@ -113,30 +95,46 @@ char	*get_next_line(int fd)
 	if (!buff)
 		return (buff);
 	test = 1;
-	while (test > 0)
+	while (!ft_check_newline(text0) && test > 0)
 	{
 		test = read(fd, buff, BUFFER_SIZE);
+		if(test < 0)
+		{
+			free(buff);
+			return (NULL);
+		}
 		buff[test] = '\0';
 		text0 = ft_strjoin(text0, buff);
-		text1 = text0;
-		if (ft_check_newline(text0))
-		{
-			line = get_line(&text0);
-			break;
-		}
-		free(text1);
 	}
 	free(buff);
+	line = get_line(text0);
+	text0 = get_newline_line(text0);
+	if(!line && text0)
+		free(text0);
 	return (line);
 }
-
+/*
 #include <stdio.h>
 int	main()
 {
 	int	fd;
 	char *s;
 
-	fd = open ("t.txt", O_RDONLY);
-	while ((s = get_next_line(fd)))
+	
+	//char *line = get_newline_line("this not a file this \n just a line !");
+	printf("%s \n", ft_strjoin("test this", NULL));
+	printf("%s \n", ft_strjoin(NULL, NULL));
+	printf("%s \n", ft_strjoin(NULL, "test this"));
+	
+	
+	fd = open ("lorem.txt", O_RDONLY);
+	//printf("1- %s", get_next_line(fd));
+	int i = 0;
+	
+	while ( i < 120 )
+	{
 		printf("1- %s", get_next_line(fd));
-}
+		i++;
+	}
+	
+}*/

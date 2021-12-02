@@ -6,7 +6,7 @@
 /*   By: kmoutaou <marvin@.42.fr>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 19:20:15 by kmoutaou          #+#    #+#             */
-/*   Updated: 2021/11/29 23:53:32 by kmoutaou         ###   ########.fr       */
+/*   Updated: 2021/12/02 06:32:55 by kmoutaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,14 @@ char	*ft_strjoin(char *s1, char *s2)
 	int		i;
 	int		j;
 	int		size;
-
-	if (!s2)
+	
+	if (!s2 && !s1)
 		return (NULL);
+	if(!s1)
+		return (ft_strdup(s2));
+	if(!s2)
+		return (ft_strdup(s1));
+
 	size = ft_strlen(s1) + ft_strlen(s2) + 1;
 	s12 = (char *)malloc(sizeof(char) * size);
 	if (!s12)
@@ -50,6 +55,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2[j])
 		s12[i++] = s2[j++];
 	s12[i] = '\0';
+	free(s1);
 	return (s12);
 }
 
