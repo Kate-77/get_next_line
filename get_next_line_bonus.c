@@ -6,7 +6,7 @@
 /*   By: kmoutaou <kmoutaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 06:05:51 by kmoutaou          #+#    #+#             */
-/*   Updated: 2021/12/03 14:33:28 by kmoutaou         ###   ########.fr       */
+/*   Updated: 2021/12/03 14:36:40 by kmoutaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	check_test(int test, char *buff)
 char	*get_next_line(int fd)
 {
 	char			*buff;
-	static char		*text;
+	static char		*text[1024];
 	char			*line;
 	int				test;
 
@@ -91,32 +91,37 @@ char	*get_next_line(int fd)
 	if (!buff)
 		return (buff);
 	test = 1;
-	while (!ft_check_newline(text) && test > 0)
+	while (!ft_check_newline(text[fd]) && test > 0)
 	{
 		test = read(fd, buff, BUFFER_SIZE);
 		if (check_test(test, buff))
 			return (NULL);
 		buff[test] = '\0';
-		text = ft_strjoin(text, buff);
+		text[fd] = ft_strjoin(text[fd], buff);
 	}
 	free(buff);
-	line = get_line(text);
-	free(text);
-	text = get_afternewline_line(text);
+	line = get_line(text[fd]);
+	free(text[fd]);
+	text[fd] = get_afternewline_line(text[fd]);
 	return (line);
 }
 /*
 #include <stdio.h>
 int	main()
 {
-	int	fd;
+	int	fd0;
+	int	fd1;
+	int	fd2;
 	int i = 0;
 
-	fd = open ("khawi.txt", O_RDONLY);
-	while ( i < 3)
-	{
-		printf("1- %s", get_next_line(fd));
-		i++;
-	}
+	fd0 = open("khawi.txt", O_RDONLY);
+	fd1 = open("empty.txt", O_RDONLY);
+	fd2 = open("lorem.txt", O_RDONLY);
+	printf("1- %s\n", get_next_line(fd2));
+	printf("2- %s\n", get_next_line(fd1));
+	printf("1- %s\n", get_next_line(fd2));
+	printf("3- %s\n", get_next_line(fd1));
+	printf("1- %s\n", get_next_line(fd2));
+	printf("2- %s\n", get_next_line(fd1));
 	
 }*/
