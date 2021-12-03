@@ -6,7 +6,7 @@
 /*   By: kmoutaou <kmoutaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 19:20:15 by kmoutaou          #+#    #+#             */
-/*   Updated: 2021/12/03 14:49:44 by kmoutaou         ###   ########.fr       */
+/*   Updated: 2021/12/03 22:48:33 by kmoutaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	*ft_substr(char *s, int start, int len)
 	if (!s2)
 		return (0);
 	i = 0;
-	while (i < (int)len && s[start])
+	while (i < len && s[start])
 		s2[i++] = s[start++];
 	s2[i] = '\0';
 	return (s2);

@@ -6,7 +6,7 @@
 /*   By: kmoutaou <kmoutaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 06:05:51 by kmoutaou          #+#    #+#             */
-/*   Updated: 2021/12/03 14:36:40 by kmoutaou         ###   ########.fr       */
+/*   Updated: 2021/12/03 21:47:18 by kmoutaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,17 @@ char	*get_afternewline_line(char *text)
 	while (text[i] && text[i] != '\n')
 		i++;
 	if (i == ft_strlen(text))
+	{
+		free(text);
 		return (NULL);
+	}
 	if (text[i] == '\n')
 		i++;
 	j = i;
 	while (text[j])
 		j++;
 	line = ft_substr(text, i, j);
+	free(text);
 	return (line);
 }
 
@@ -101,27 +105,6 @@ char	*get_next_line(int fd)
 	}
 	free(buff);
 	line = get_line(text[fd]);
-	free(text[fd]);
 	text[fd] = get_afternewline_line(text[fd]);
 	return (line);
 }
-/*
-#include <stdio.h>
-int	main()
-{
-	int	fd0;
-	int	fd1;
-	int	fd2;
-	int i = 0;
-
-	fd0 = open("khawi.txt", O_RDONLY);
-	fd1 = open("empty.txt", O_RDONLY);
-	fd2 = open("lorem.txt", O_RDONLY);
-	printf("1- %s\n", get_next_line(fd2));
-	printf("2- %s\n", get_next_line(fd1));
-	printf("1- %s\n", get_next_line(fd2));
-	printf("3- %s\n", get_next_line(fd1));
-	printf("1- %s\n", get_next_line(fd2));
-	printf("2- %s\n", get_next_line(fd1));
-	
-}*/

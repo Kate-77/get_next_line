@@ -6,7 +6,7 @@
 /*   By: kmoutaou <kmoutaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 06:05:51 by kmoutaou          #+#    #+#             */
-/*   Updated: 2021/12/03 14:33:28 by kmoutaou         ###   ########.fr       */
+/*   Updated: 2021/12/03 22:48:50 by kmoutaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,17 @@ char	*get_afternewline_line(char *text)
 	while (text[i] && text[i] != '\n')
 		i++;
 	if (i == ft_strlen(text))
+	{
+		free(text);
 		return (NULL);
+	}
 	if (text[i] == '\n')
 		i++;
 	j = i;
 	while (text[j])
 		j++;
 	line = ft_substr(text, i, j);
+	free(text);
 	return (line);
 }
 
@@ -73,8 +77,7 @@ int	check_test(int test, char *buff)
 		free(buff);
 		return (1);
 	}
-	else
-		return (0);
+	return (0);
 }
 
 char	*get_next_line(int fd)
@@ -101,22 +104,6 @@ char	*get_next_line(int fd)
 	}
 	free(buff);
 	line = get_line(text);
-	free(text);
 	text = get_afternewline_line(text);
 	return (line);
 }
-/*
-#include <stdio.h>
-int	main()
-{
-	int	fd;
-	int i = 0;
-
-	fd = open ("khawi.txt", O_RDONLY);
-	while ( i < 3)
-	{
-		printf("1- %s", get_next_line(fd));
-		i++;
-	}
-	
-}*/
